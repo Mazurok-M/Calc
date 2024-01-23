@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calc</title>
+  </head>
+  <body>
+    <h1>Calc</h1>
+    <form autocomplete="off">
+      <div class="type_select" id="type_select">
+        <label>
+          <input type="radio" name="type" value="paint" />
+          Фарба
+        </label>
+        <label>
+          <input type="radio" name="type" value="enamel" />
+          Емаль
+        </label>
+        <label>
+          <input type="radio" name="type" value="plaster" />
+          Штукатурка
+        </label>
+      </div>
+
+      <label for="type-search"
+        >Тип структури
+        <input
+          list="type"
+          id="search-box-type"
+          name="type-search"
+          placeholder="Виберіть тип"
+        />
+
+        <datalist id="type" class="type-datalist"> </datalist>
+      </label>
+
+      <div>
+        <label for="weight"
+          >Вага
+          <input
+            list="weight"
+            id="search-weight"
+            name="weight-search"
+            placeholder="Виберіть вагу"
+          />
+          кг
+          <datalist id="weight" class="weight-datalist"> </datalist>
+        </label>
+      </div>
+      <div>Ціна <span class="type-prise"></span></div>
+      <p>Виберіть тип</p>
+      <div class="colour_management" id="colour_management">
+        <label>
+          <input
+            type="radio"
+            name="color"
+            value="ral"
+            class="colour_input"
+            disabled
+          />
+          RAL
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="color"
+            value="ncs"
+            class="colour_input"
+            disabled
+          />
+          NCS
+        </label>
+      </div>
+
+      <label for="color-search"
+        >Номер кольору
+        <input
+          list="color"
+          id="search-box"
+          name="color-search"
+          placeholder="Виберіть колір"
+          disabled
+        />
+
+        <datalist id="color" class="color-datalist"> </datalist>
+      </label>
+      <div>Ціна <span class="ral-prise"></span></div>
+      <button type="submit" class="button_calc">Порахувати</button>
+      <button type="submit">Відправити</button>
+
+      <div class="url"></div>
+      <div>Загальна вартість: <span class="total_price"></span></div>
+    </form>
+
+    <script src="calc.js" type="module"></script>
+    <!-- <script src="https://apis.google.com/js/client.js"></script> -->
+  </body>
+</html>
