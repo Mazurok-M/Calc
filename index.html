@@ -1,99 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calc</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Calc</h1>
-    <form autocomplete="off">
-      <div class="type_select" id="type_select">
-        <label>
-          <input type="radio" name="type" value="paint" />
-          Фарба
-        </label>
-        <label>
-          <input type="radio" name="type" value="enamel" />
-          Емаль
-        </label>
-        <label>
-          <input type="radio" name="type" value="plaster" />
-          Штукатурка
-        </label>
-      </div>
+    <div class="calc-container">
+      <h1 class="calc-title">Калькулятор</h1>
 
-      <label for="type-search"
-        >Тип структури
-        <input
-          list="type"
-          id="search-box-type"
-          name="type-search"
-          placeholder="Виберіть тип"
-        />
+      <form autocomplete="off" class="calc-form">
+        <div class="structure_select" id="structure_select">
+          <div class="structure_box">
+            <img src="./img/paints.jpg" alt="" width="150" />
+            <label class="calc-radio">
+              <input
+                type="radio"
+                name="structure"
+                value="paint"
+                class="calc-radio__input"
+              />
+              <span>Фарби, емалі, мастики</span>
+            </label>
+          </div>
+          <div class="structure_box">
+            <img src="./img/paints.jpg" alt="" width="150" />
+            <label class="calc-radio">
+              <input
+                type="radio"
+                name="structure"
+                value="enamel"
+                class="calc-radio__input"
+              />
+              <span>Кварцові, структурні фарби, ґрунти</span>
+            </label>
+          </div>
+          <div class="structure_box">
+            <img src="./img/paints.jpg" alt="" width="150" />
+            <label class="calc-radio">
+              <input
+                type="radio"
+                name="structure"
+                value="plaster"
+                class="calc-radio__input"
+              />
+              <span> Декоративні штукатурки</span>
+            </label>
+          </div>
+        </div>
+        <div class="wrap">
+          <label for="structure-search" class="structure-search"
+            >Тип структури
+            <input
+              list="structure"
+              id="search-box-structure"
+              name="structureSearch"
+              placeholder="Виберіть тип"
+            />
+            <datalist id="structure" class="structure-datalist"> </datalist>
+          </label>
+          <label for="weight" class="weight"
+            >Фасовка
+            <input
+              list="weight"
+              id="search-weight"
+              name="weightSearch"
+              placeholder="Виберіть вагу"
+            />
+            кг/л
+            <datalist id="weight" class="weight-datalist"> </datalist>
+          </label>
+          <div class="structure-prise_wrap">
+            Ціна без тонування: <span class="structure-prise">0</span> грн.
+          </div>
+          <h4 class="pallet_title">Оберіть палітру</h4>
+          <div class="colour_management" id="colour_management">
+            <label class="calc-radio">
+              <input
+                type="radio"
+                name="color"
+                value="ral"
+                class="colour_input"
+                disabled
+              />
+              RAL
+            </label>
+            <label class="calc-radio">
+              <input
+                type="radio"
+                name="color"
+                value="ncs"
+                class="colour_input"
+                disabled
+              />
+              NCS
+            </label>
+          </div>
+          <div class="color-search">
+            <label for="color-search"
+              >Колір
+              <input
+                list="color"
+                id="search-box"
+                name="colorSearch"
+                placeholder="Виберіть колір"
+                disabled
+              />
 
-        <datalist id="type" class="type-datalist"> </datalist>
-      </label>
+              <datalist id="color" class="color-datalist"> </datalist>
+            </label>
+            <div class="color_preview"></div>
+          </div>
+          <div class="total_wrap">
+            Ціна в кольорі, підсумок: <span class="total_price">0</span> грн.
+          </div>
+          <div class="calc-user">
+            <label class="calc-phone">
+              Телефон
+              <input
+                class="calc-user_phone"
+                type="tel"
+                name="phone"
+                id="phone"
+                required
+                placeholder="+38(000)-000-00-00"
+              />
+            </label>
+            <label>
+              ПІБ
+              <input type="text" name="name" required class="calc-user_name" />
+            </label>
+          </div>
+          <button type="submit" class="button_submit">
+            Запустити в роботу
+          </button>
 
-      <div>
-        <label for="weight"
-          >Вага
-          <input
-            list="weight"
-            id="search-weight"
-            name="weight-search"
-            placeholder="Виберіть вагу"
-          />
-          кг
-          <datalist id="weight" class="weight-datalist"> </datalist>
-        </label>
-      </div>
-      <div>Ціна <span class="type-prise"></span></div>
-      <p>Виберіть тип</p>
-      <div class="colour_management" id="colour_management">
-        <label>
-          <input
-            type="radio"
-            name="color"
-            value="ral"
-            class="colour_input"
-            disabled
-          />
-          RAL
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="color"
-            value="ncs"
-            class="colour_input"
-            disabled
-          />
-          NCS
-        </label>
-      </div>
-
-      <label for="color-search"
-        >Номер кольору
-        <input
-          list="color"
-          id="search-box"
-          name="color-search"
-          placeholder="Виберіть колір"
-          disabled
-        />
-
-        <datalist id="color" class="color-datalist"> </datalist>
-      </label>
-      <div>Ціна <span class="ral-prise"></span></div>
-      <button type="submit" class="button_calc">Порахувати</button>
-      <button type="submit">Відправити</button>
-
-      <div class="url"></div>
-      <div>Загальна вартість: <span class="total_price"></span></div>
-    </form>
-
+          <!-- <div class="url"></div> -->
+        </div>
+      </form>
+    </div>
     <script src="calc.js" type="module"></script>
-    <!-- <script src="https://apis.google.com/js/client.js"></script> -->
+    <script src="https://www.w3schools.com/lib/w3color.js"></script>
+
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
   </body>
 </html>
+
+<!-- data-w3-color="ncs(0510-R80B)" -->
+
+<!-- https://www.wiesepainting.com/wp-content/uploads/paints-color-chart.jpg -->
