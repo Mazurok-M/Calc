@@ -1,21 +1,21 @@
 const BASE_URL =
-  'https://opensheet.elk.sh/1NEsvoEKcd_KShdoSBLzsTN6jgqXe0Kf9IpzYEy01eKI';
+  "https://opensheet.elk.sh/1NEsvoEKcd_KShdoSBLzsTN6jgqXe0Kf9IpzYEy01eKI";
 
 const ref = {
-  RalName: document.querySelector('.color-list'),
-  RalPrise: document.querySelector('.ral-prise'),
-  inputEl: document.querySelector('#search-box'),
-  inputType: document.querySelector('.structure-datalist'),
-  datalistColor: document.querySelector('.color-datalist'),
-  inputTypeEl: document.querySelector('#search-box-structure'),
-  datalistWeightEl: document.querySelector('.weight-datalist'),
-  inputWeightEl: document.querySelector('#search-weight'),
-  TypePrise: document.querySelector('.structure-prise'),
-  inputColor: document.querySelectorAll('.colour_input'),
+  RalName: document.querySelector(".color-list"),
+  RalPrise: document.querySelector(".ral-prise"),
+  inputEl: document.querySelector("#search-box-color"),
+  inputType: document.querySelector(".structure-datalist"),
+  datalistColor: document.querySelector(".color-datalist"),
+  inputTypeEl: document.querySelector("#search-box-structure"),
+  datalistWeightEl: document.querySelector(".weight-datalist"),
+  inputWeightEl: document.querySelector("#search-weight"),
+  TypePrise: document.querySelector(".structure-prise"),
+  inputColor: document.querySelectorAll(".colour_input"),
   // textUrl: document.querySelector('.url'),
-  totalPrice: document.querySelector('.total_price'),
+  totalPrice: document.querySelector(".total_price"),
 
-  colorPreview: document.querySelector('.color_preview'),
+  colorPreview: document.querySelector(".color_preview"),
 };
 
 let data = {};
@@ -35,37 +35,37 @@ let selectTypePrice;
 // Ціна за колір RalPrise:
 let selectColorPrise;
 
-startData(data);
+// startData(data);
 
 // ral NCS
 document
-  .querySelector('.colour_management')
-  .addEventListener('change', function (e) {
+  .querySelector(".colour_management")
+  .addEventListener("change", function (e) {
     const select = e.target.value;
 
     ref.inputEl.disabled = false;
-    ref.inputEl.value = '';
+    ref.inputEl.value = "";
     // ref.RalPrise.innerHTML = '';
     fetchColor(select, colorList);
   });
 
 // Вибирає  тип (pain, enamel, plaster)
 document
-  .querySelector('.structure_select')
-  .addEventListener('change', function (e) {
+  .querySelector(".structure_select")
+  .addEventListener("change", function (e) {
     selectType = e.target.value;
 
-    ref.inputTypeEl.value = '';
-    ref.inputWeightEl.value = '';
+    ref.inputTypeEl.value = "";
+    ref.inputWeightEl.value = "";
     // ref.TypePrise.innerHTML = '';
     // ref.totalPrice.innerHTML = '';
-    ref.colorPreview.removeAttribute('data-w3-color');
+    ref.colorPreview.removeAttribute("data-w3-color");
 
     const inputColors = Array.from(ref.inputColor);
     inputColors.map((e) => {
       return (e.disabled = true);
     });
-    ref.inputEl.value = '';
+    ref.inputEl.value = "";
     // ref.RalPrise.innerHTML = '';
 
     fetchColor(selectType, typeList);
@@ -85,14 +85,14 @@ function onInputChangeColor(searchQuery) {
 
     filterRAL[0].hex
       ? (ref.colorPreview.style.backgroundColor = filterRAL[0].hex)
-      : ref.colorPreview.setAttribute('data-w3-color', `ncs(${searchQuery})`);
+      : ref.colorPreview.setAttribute("data-w3-color", `ncs(${searchQuery})`);
     w3SetColorsByAttribute();
 
     calcTotal();
   }
 }
 
-ref.inputEl.addEventListener('input', getNameSearchColor);
+ref.inputEl.addEventListener("input", getNameSearchColor);
 
 // Назва структури
 function onInputChangeType(searchQuery) {
@@ -110,8 +110,8 @@ function onInputChangeType(searchQuery) {
       }
     }
   } else {
-    ref.inputWeightEl.value = '';
-    ref.TypePrise.innerHTML = '';
+    ref.inputWeightEl.value = "";
+    ref.TypePrise.innerHTML = "";
   }
   // ref.textUrl.innerHTML = `<a href=${filterType[0].url}>Посилання</a>`;
   ref.datalistWeightEl.innerHTML = createWeights(weights);
@@ -122,7 +122,7 @@ function getSearchName(ev) {
   onInputChangeType(searchQuery);
 }
 
-ref.inputTypeEl.addEventListener('input', getSearchName);
+ref.inputTypeEl.addEventListener("input", getSearchName);
 
 function getSelectTypePrice() {
   selectWeight = ref.inputWeightEl.value;
@@ -136,10 +136,10 @@ function getSelectTypePrice() {
 
   paint[selectWeight]
     ? (ref.TypePrise.innerHTML = selectTypePrice)
-    : (ref.TypePrise.innerHTML = '');
+    : (ref.TypePrise.innerHTML = "");
 }
 
-ref.inputWeightEl.addEventListener('input', getSelectTypePrice);
+ref.inputWeightEl.addEventListener("input", getSelectTypePrice);
 
 async function listPriseRal(range) {
   return await fetch(`${BASE_URL}/${range}`).then((res) => {
@@ -157,7 +157,7 @@ function createColor(e) {
       <option>${number}</option>
           `;
     })
-    .join('');
+    .join("");
 }
 
 function createType(e) {
@@ -167,7 +167,7 @@ function createType(e) {
       <option>${name}</option>
           `;
     })
-    .join('');
+    .join("");
 }
 
 function createWeights(elements) {
@@ -177,7 +177,7 @@ function createWeights(elements) {
       <option>${element}</option>
           `;
     })
-    .join('');
+    .join("");
 }
 
 async function fetchColor(e, f) {
@@ -200,37 +200,11 @@ function calcTotal() {
   ref.totalPrice.innerHTML = total;
 }
 
-// document
-//   .querySelector('.button_submit')
-//   .addEventListener('submit', function (e) {
-//     e.preventDefault();
-//     console.log('add');
-//     // const formData = new FormData(form);
-//     // console.log(formData);
-//   });
-
-// const handleSubmit = (e) => {
-//   e.preventDefault();
-//   // const formData = e.target.elements;
-
-//   // const formData = new FormData();
-//   // let response = await fetch('http://127.0.0.1:5500/', {
-//   //   method: 'POST',
-//   //   body: new FormData(form),
-//   // });
-
-//   // let result = await response.json();
-//   // console.log(formData);
-// };
-
-// form.addEventListener('submit', handleSubmit);
-// const location = window.location.toString();
-
 function parseUrlQuery() {
   if (location.search) {
-    let pair = decodeURIComponent(location.search).substr(1).split('&');
+    let pair = decodeURIComponent(location.search).substr(1).split("&");
     for (let i = 0; i < pair.length; i++) {
-      let param = pair[i].split('=');
+      let param = pair[i].split("=");
       data[param[0]] = param[1];
     }
   }
@@ -238,57 +212,57 @@ function parseUrlQuery() {
   return data;
 }
 
-async function startData(data) {
-  if (Object.keys(data).length !== 0) {
-    document
-      .querySelector(`input[value="${data.structure}"]`)
-      .setAttribute('checked', true);
+// async function startData(data) {
+//   if (Object.keys(data).length !== 0) {
+//     document
+//       .querySelector(`input[value="${data.structure}"]`)
+//       .setAttribute("checked", true);
 
-    await fetchColor(data.structure, typeList);
-    selectType = data.structure;
-    const searchStructure = data.structureSearch.replaceAll('+', ' ');
+//     await fetchColor(data.structure, typeList);
+//     selectType = data.structure;
+//     const searchStructure = data.structureSearch.replaceAll("+", " ");
 
-    ref.inputTypeEl.value = searchStructure;
+//     ref.inputTypeEl.value = searchStructure;
 
-    onInputChangeType(searchStructure);
+//     onInputChangeType(searchStructure);
 
-    ref.inputWeightEl.value = data.weightSearch;
+//     ref.inputWeightEl.value = data.weightSearch;
 
-    getSelectTypePrice();
-    document
-      .querySelector(`input[value="${data.color}"]`)
-      .setAttribute('checked', true);
+//     getSelectTypePrice();
+//     document
+//       .querySelector(`input[value="${data.color}"]`)
+//       .setAttribute("checked", true);
 
-    await fetchColor(data.color, colorList);
+//     await fetchColor(data.color, colorList);
 
-    ref.inputEl.disabled = false;
+//     ref.inputEl.disabled = false;
 
-    ref.inputEl.value = data.colorSearch;
-    onInputChangeColor(data.colorSearch);
-  }
-}
+//     ref.inputEl.value = data.colorSearch;
+//     onInputChangeColor(data.colorSearch);
+//   }
+// }
 
-const form = document.querySelector('.calc-form');
+const form = document.querySelector(".calc-form");
 
 function sendEmail(formData) {
   Email.send({
-    SecureToken: 'd64bb1e5-28cc-4533-8a48-6b2beab954a0',
-    To: 'mariashkam@ukr.net',
-    From: 'm.p.mazurok@gmail.com',
-    Subject: 'Замовлення',
+    SecureToken: "d64bb1e5-28cc-4533-8a48-6b2beab954a0",
+    To: "mariashkam@ukr.net",
+    From: "m.p.mazurok@gmail.com",
+    Subject: "Замовлення",
     Body: `Група - ${formData.get(
-      'structure'
+      "structure"
     )}. <br/> Тип структури: - ${formData.get(
-      'structureSearch'
+      "structureSearch"
     )}.<br/> Фасовка - ${formData.get(
-      'weightSearch'
-    )}. <br/> Палітра - ${formData.get('color')}.<br/> Колір - ${formData.get(
-      'colorSearch'
+      "weightSearch"
+    )}. <br/> Палітра - ${formData.get("color")}.<br/> Колір - ${formData.get(
+      "colorSearch"
     )}.<br/> Загальна вартість - ${total}.<br/>
-    Телефон: ${formData.get('phone')}.<br/> 
-    Ім'я: ${formData.get('name')}.`,
+    Телефон: ${formData.get("phone")}.<br/> 
+    Ім'я: ${formData.get("name")}.`,
   }).then((message) => {
-    if (message === 'OK') {
+    if (message === "OK") {
       alert(
         `Ваше замовлення прийняте. Наш менеджер з Вами зв\u0027яжеться найближчим часом`
       );
@@ -298,7 +272,7 @@ function sendEmail(formData) {
   });
 }
 
-form.addEventListener('submit', (event) => {
+form.addEventListener("submit", (event) => {
   event.preventDefault();
   const formData = new FormData(form);
   sendEmail(formData);
@@ -310,10 +284,10 @@ form.addEventListener('submit', (event) => {
 
 // ===============================================
 
-const phoneEl = document.getElementById('phone');
+const phoneEl = document.getElementById("phone");
 
 phoneEl.onclick = function () {
-  phoneEl.value = '+38';
+  phoneEl.value = "+38";
 };
 
 let old = 0;
@@ -326,13 +300,13 @@ phoneEl.onkeydown = function () {
     return;
   }
 
-  if (curLen === 3) phoneEl.value = phoneEl.value + '(';
+  if (curLen === 3) phoneEl.value = phoneEl.value + "(";
 
-  if (curLen === 7) phoneEl.value = phoneEl.value + ')-';
+  if (curLen === 7) phoneEl.value = phoneEl.value + ")-";
 
-  if (curLen === 12) phoneEl.value = phoneEl.value + '-';
+  if (curLen === 12) phoneEl.value = phoneEl.value + "-";
 
-  if (curLen === 15) phoneEl.value = phoneEl.value + '-';
+  if (curLen === 15) phoneEl.value = phoneEl.value + "-";
 
   if (curLen > 17)
     phoneEl.value = phoneEl.value.substring(0, phoneEl.value.length - 1);
