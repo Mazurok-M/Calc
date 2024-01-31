@@ -32,3 +32,47 @@
 // gapi.load('client', start);
 
 /* <script src="https://apis.google.com/js/client.js"></script> */
+
+// ===============================================
+
+// function parseUrlQuery() {
+//   if (location.search) {
+//     let pair = decodeURIComponent(location.search).substr(1).split('&');
+//     for (let i = 0; i < pair.length; i++) {
+//       let param = pair[i].split('=');
+//       data[param[0]] = param[1];
+//     }
+//   }
+
+//   return data;
+// }
+
+// async function startData(data) {
+//   if (Object.keys(data).length !== 0) {
+//     document
+//       .querySelector(`input[value="${data.structure}"]`)
+//       .setAttribute("checked", true);
+
+//     await fetchColor(data.structure, typeList);
+//     selectType = data.structure;
+//     const searchStructure = data.structureSearch.replaceAll("+", " ");
+
+//     ref.searchStructureIn.value = searchStructure;
+
+//     onInputChangeType(searchStructure);
+
+//     ref.searchWeightIn.value = data.weightSearch;
+
+//     getSelectTypePrice();
+//     document
+//       .querySelector(`input[value="${data.color}"]`)
+//       .setAttribute("checked", true);
+
+//     await fetchColor(data.color, colorList);
+
+//     ref.searchColorIn.disabled = false;
+
+//     ref.searchColorIn.value = data.colorSearch;
+//     onInputChangeColor(data.colorSearch);
+//   }
+// }
