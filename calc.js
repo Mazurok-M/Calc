@@ -20,133 +20,22 @@ const ref = {
 
   colorPreviewEl: document.querySelector('.color__preview'),
   totalPriceEl: document.querySelector('.total-price__span'),
+  phoneEl: document.getElementById('phone'),
+  but: document.querySelector('.calc-button'),
   form: document.querySelector('.calc-form'),
 };
 
-let data = {};
-let listAllColor;
-let listTypeAll;
+let selectMaterial;
+let structureList;
+let structureSelect;
 let weights = [];
-let paint;
-let selectType;
-let total;
-
-// parseUrlQuery();
-
-// Вага searchWeightIn
 let selectWeight;
-// Ціна структури priseStructureEl
-let selectTypePrice;
-// Ціна за колір RalPrise:
+let priseStructure;
+let colorsList;
+let total;
 let selectColorPrise;
 // ===============================================
-
-// ral NCS
-
-ref.palletChangeEl.addEventListener('change', changePallet);
-
-function changePallet(e) {
-  const select = e.target.value;
-
-  ref.searchColorIn.disabled = false;
-  ref.searchColorIn.value = '';
-
-  fetchColor(select, colorList);
-}
-
-// --------------------------------------------
-// Вибирає  тип (pain, enamel, plaster)
-ref.structureChangeEl.addEventListener('change', changeStructure);
-
-function changeStructure(e) {
-  selectType = e.target.value;
-
-  ref.searchStructureIn.value = '';
-  ref.searchWeightIn.value = '';
-  // ref.priseStructureEl.innerHTML = '';
-  // ref.totalPriceEl.innerHTML = '';
-  ref.colorPreviewEl.removeAttribute('data-w3-color');
-
-  const inputColors = Array.from(ref.palletSelectionIn);
-  inputColors.map((e) => {
-    return (e.disabled = true);
-  });
-  ref.searchColorIn.value = '';
-
-  fetchColor(selectType, typeList);
-}
-// ========================================================================
-// вибирає колір
-function getNameSearchColor(ev) {
-  const searchQuery = ev.target.value.trim();
-  onInputChangeColor(searchQuery);
-}
-
-function onInputChangeColor(searchQuery) {
-  const filterRAL = listAllColor.filter((col) => col.number === searchQuery);
-
-  if (filterRAL.length === 1) {
-    selectColorPrise = filterRAL[0][selectType];
-
-    filterRAL[0].hex
-      ? (ref.colorPreviewEl.style.backgroundColor = filterRAL[0].hex)
-      : ref.colorPreviewEl.setAttribute('data-w3-color', `ncs(${searchQuery})`);
-    w3SetColorsByAttribute();
-
-    calcTotal();
-  }
-}
-
-ref.searchColorIn.addEventListener('input', getNameSearchColor);
-
-// Назва структури
-function onInputChangeType(searchQuery) {
-  weights = [];
-
-  const filterType = listTypeAll.filter((el) => el.name === searchQuery);
-
-  if (filterType.length === 1) {
-    const keys = Object.keys(filterType[0]);
-    paint = filterType[0];
-
-    for (let key of keys) {
-      if (Number(key)) {
-        weights.push(key);
-      }
-    }
-  } else {
-    ref.searchWeightIn.value = '';
-    ref.priseStructureEl.innerHTML = '';
-  }
-
-  ref.weightListEl.innerHTML = createWeights(weights);
-}
-
-function getSearchName(ev) {
-  const searchQuery = ev.target.value.trim();
-  onInputChangeType(searchQuery);
-}
-
-ref.searchStructureIn.addEventListener('input', getSearchName);
-
-function getSelectTypePrice() {
-  selectWeight = ref.searchWeightIn.value;
-  const inputColors = Array.from(ref.palletSelectionIn);
-
-  inputColors.map((e) => {
-    return (e.disabled = false);
-  });
-
-  selectTypePrice = paint[selectWeight];
-
-  paint[selectWeight]
-    ? (ref.priseStructureEl.innerHTML = selectTypePrice)
-    : (ref.priseStructureEl.innerHTML = '');
-}
-
-ref.searchWeightIn.addEventListener('input', getSelectTypePrice);
-
-async function listPriseRal(range) {
+async function fetchData(range) {
   return await fetch(`${BASE_URL}/${range}`).then((res) => {
     if (!res.ok) {
       throw new Error(response.status);
@@ -155,17 +44,41 @@ async function listPriseRal(range) {
   });
 }
 
-function createColor(e) {
-  return e
-    .map(({ number }) => {
-      return `
-      <option>${number}</option>
-          `;
-    })
-    .join('');
+async function getListData(range, fun) {
+  await fetchData(range).then(fun);
 }
 
-function createType(e) {
+// Вибирає  тип (pain, enamel, plaster) та отримуємо список структур
+ref.structureChangeEl.addEventListener('change', changeStructure);
+
+function changeStructure(e) {
+  selectMaterial = e.target.value;
+
+  // reset
+  ref.searchStructureIn.value = '';
+  ref.searchWeightIn.value = '';
+  ref.priseStructureEl.innerHTML = '0';
+  ref.totalPriceEl.innerHTML = '0';
+  ref.colorPreviewEl.removeAttribute('data-w3-color');
+  ref.colorPreviewEl.style.backgroundColor = 'inherit';
+  const palletInputs = Array.from(ref.palletSelectionIn);
+  palletInputs.map((e) => {
+    return (e.disabled = true);
+  });
+  ref.searchColorIn.value = '';
+  // =================================
+
+  getListData(selectMaterial, getStructureList);
+}
+
+// Отримання списку структур
+function getStructureList(ev) {
+  structureList = ev;
+  ref.structureListEl.innerHTML = createStructureItem(ev);
+}
+
+// Відмальовуємо список структур
+function createStructureItem(e) {
   return e
     .map(({ name }) => {
       return `
@@ -175,7 +88,50 @@ function createType(e) {
     .join('');
 }
 
-function createWeights(elements) {
+// ========================================================================
+// Вибір назви структури
+
+ref.searchStructureIn.addEventListener('input', getStructureName);
+
+function getStructureName(ev) {
+  const structureName = ev.target.value.trim();
+  onInputSelectStructure(structureName);
+}
+
+// В залежності від вибраної структури отримуємо список доступної фасовки
+function onInputSelectStructure(structureName) {
+  // reset
+  weights = [];
+  ref.searchWeightIn.value = '';
+  ref.priseStructureEl.innerHTML = '0';
+  ref.totalPriceEl.innerHTML = '0';
+  ref.colorPreviewEl.removeAttribute('data-w3-color');
+  ref.colorPreviewEl.style.backgroundColor = 'inherit';
+  ref.searchColorIn.value = '';
+
+  // =====================================
+
+  const filterStructureName = structureList.filter(
+    (el) => el.name === structureName
+  );
+
+  if (filterStructureName.length === 1) {
+    const keys = Object.keys(filterStructureName[0]);
+    structureSelect = filterStructureName[0];
+
+    for (let key of keys) {
+      if (Number(key)) {
+        weights.push(key);
+      }
+    }
+  }
+
+  ref.weightListEl.innerHTML = createWeightsItems(weights);
+}
+
+// Відмальовуємо фасовку
+
+function createWeightsItems(elements) {
   return elements
     .map((element) => {
       return `
@@ -185,25 +141,111 @@ function createWeights(elements) {
     .join('');
 }
 
-async function fetchColor(e, f) {
-  await listPriseRal(e).then(f);
+// ====================================================================
+ref.searchWeightIn.addEventListener('input', getSelectWeight);
+
+// отримуємо вибрану фасовку та виводимо ціну без тонування
+
+function getSelectWeight() {
+  // reset
+  ref.priseStructureEl.innerHTML = '0';
+  ref.searchColorIn.value = '';
+  ref.colorPreviewEl.removeAttribute('data-w3-color');
+  ref.colorPreviewEl.style.backgroundColor = 'inherit';
+  ref.totalPriceEl.innerHTML = '0';
+
+  // ========
+
+  selectWeight = ref.searchWeightIn.value;
+  const palletInputs = Array.from(ref.palletSelectionIn);
+  palletInputs.map((e) => {
+    return (e.disabled = false);
+  });
+
+  priseStructure = structureSelect[selectWeight];
+
+  structureSelect[selectWeight]
+    ? (ref.priseStructureEl.innerHTML = priseStructure)
+    : (ref.priseStructureEl.innerHTML = '0');
+}
+// ===============================================================
+
+// ral NCS
+
+ref.palletChangeEl.addEventListener('change', changePallet);
+
+function changePallet(e) {
+  // reset
+  ref.colorPreviewEl.removeAttribute('data-w3-color');
+  ref.colorPreviewEl.style.backgroundColor = 'inherit';
+  ref.totalPriceEl.innerHTML = '0';
+  ref.searchColorIn.value = '';
+  // ----------------------------------------------
+
+  const selectPallet = e.target.value;
+
+  ref.searchColorIn.disabled = false;
+
+  getListData(selectPallet, getColorList);
 }
 
-function colorList(color) {
-  listAllColor = color;
-  ref.colorListEl.innerHTML = createColor(color);
+function getColorList(ev) {
+  colorsList = ev;
+  ref.colorListEl.innerHTML = createColorItems(ev);
 }
 
-function typeList(t) {
-  listTypeAll = t;
-  ref.structureListEl.innerHTML = createType(t);
+// Відмальовуєм список кольорів
+function createColorItems(e) {
+  return e
+    .map(({ number }) => {
+      return `
+      <option>${number}</option>
+          `;
+    })
+    .join('');
 }
 
+// ======================================================
+
+ref.searchColorIn.addEventListener('input', getNameColor);
+// вибирає колір
+function getNameColor(ev) {
+  const nameColor = ev.target.value.trim();
+  onInputSelectColor(nameColor);
+}
+
+function onInputSelectColor(nameColor) {
+  const filterColors = colorsList.filter((col) => col.number === nameColor);
+
+  if (filterColors.length === 1) {
+    selectColorPrise = filterColors[0][selectMaterial];
+
+    filterColors[0].hex
+      ? (ref.colorPreviewEl.style.backgroundColor = filterColors[0].hex)
+      : ref.colorPreviewEl.setAttribute('data-w3-color', `ncs(${nameColor})`);
+    w3SetColorsByAttribute();
+
+    calcTotal();
+  }
+}
+// Розрахунок загальної вартості
 function calcTotal() {
   total =
-    Number(selectWeight) * Number(selectColorPrise) + Number(selectTypePrice);
+    Number(selectWeight) * Number(selectColorPrise) + Number(priseStructure);
   ref.totalPriceEl.innerHTML = total;
 }
+
+// ========================================
+// Відправка емейла
+
+ref.form.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(ref.form);
+  sendEmail(formData);
+
+  ref.but.setAttribute('disabled', 'disabled');
+});
 
 function sendEmail(formData) {
   Email.send({
@@ -225,7 +267,7 @@ function sendEmail(formData) {
   }).then((message) => {
     if (message === 'OK') {
       alert(
-        `Ваше замовлення прийняте. Наш менеджер з Вами зв\u0027яжеться найближчим часом`
+        'Дякуємо за замовдення. Наш менеджер з Вами зв\u0027яжеться найближчим часом'
       );
     } else {
       alert(message);
@@ -233,44 +275,35 @@ function sendEmail(formData) {
   });
 }
 
-ref.form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const formData = new FormData(ref.form);
-  sendEmail(formData);
-});
-
 // 3f124145-fdbf-4716-85c1-40ef55000509
 // Username: 'm.p.mazurok@gmail.com',
 // Password: '8A6207DF076B383C44B4ACD5663CB241336F',
 
 // ===============================================
 
-const phoneEl = document.getElementById('phone');
-
-phoneEl.onclick = function () {
-  phoneEl.value = '+38';
+ref.phoneEl.onclick = function () {
+  ref.phoneEl.value = '+38';
 };
 
 let old = 0;
 
-phoneEl.onkeydown = function () {
-  let curLen = phoneEl.value.length;
+ref.phoneEl.onkeydown = function () {
+  let curLen = ref.phoneEl.value.length;
 
   if (curLen < old) {
     old--;
     return;
   }
 
-  if (curLen === 3) phoneEl.value = phoneEl.value + '(';
-
-  if (curLen === 7) phoneEl.value = phoneEl.value + ')-';
-
-  if (curLen === 12) phoneEl.value = phoneEl.value + '-';
-
-  if (curLen === 15) phoneEl.value = phoneEl.value + '-';
-
+  if (curLen === 3) ref.phoneEl.value = ref.phoneEl.value + '(';
+  if (curLen === 7) ref.phoneEl.value = ref.phoneEl.value + ')-';
+  if (curLen === 12) ref.phoneEl.value = ref.phoneEl.value + '-';
+  if (curLen === 15) ref.phoneEl.value = ref.phoneEl.value + '-';
   if (curLen > 17)
-    phoneEl.value = phoneEl.value.substring(0, phoneEl.value.length - 1);
+    ref.phoneEl.value = ref.phoneEl.value.substring(
+      0,
+      ref.phoneEl.value.length - 1
+    );
 
   old++;
 };
