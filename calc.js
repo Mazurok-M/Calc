@@ -108,7 +108,6 @@ function onInputSelectStructure() {
     structureSelect = filterStructureName[0];
 
     for (let key of keys) {
-      console.log(weights);
       if (Number(key)) {
         weights.push(key);
       }
@@ -341,7 +340,7 @@ function sendEmail(formData) {
   }).then((message) => {
     if (message === 'OK') {
       alert(
-        'Дякуємо за замовдення. Наш менеджер з Вами зв\u0027яжеться найближчим часом'
+        'Дякуємо за замовлення. Наш менеджер з Вами зв\u0027яжеться найближчим часом'
       );
     } else {
       alert(message);
