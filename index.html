@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calc</title>
+    <link
+      href="
+https://cdn.jsdelivr.net/npm/choices.js@10.2.0/public/assets/styles/choices.min.css
+"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -66,36 +72,29 @@
           </div>
         </div>
         <div class="calc-form__wrap">
-          <label for="structure-search" class="structure"
-            >Тип структури
-            <input
-              list="structure-list"
+          <div class="structure">
+            <label for="structure-search">Тип структури</label>
+            <select
+              class="structure__list"
               id="structure-search"
               name="structureSearch"
-              placeholder="Виберіть тип"
-              required
-            />
-            <datalist id="structure-list" class="structure__list"> </datalist>
-          </label>
-          <label for="weight-search" class="weight"
-            >Фасовка
-            <input
-              list="weight-list"
-              id="weight-search"
-              name="weightSearch"
-              placeholder="Виберіть вагу"
-              required
-            />
-            кг/л
-            <datalist id="weight-list" class="weight__list"> </datalist>
-          </label>
+            >
+              <option value="">Виберіть тип</option>
+            </select>
+          </div>
+          <div class="weight">
+            <label for="weight-search" class="weight__title">Фасовка</label>
+            <select class="weight__list" id="weight-search" name="weightSearch">
+              <option value="">Виберіть вагу</option>
+            </select>
+            <span>кг/л</span>
+          </div>
           <div class="structure-prise">
             Ціна без тонування:
             <span class="structure-prise__span">0</span> грн.
           </div>
           <h4 class="pallet__title">Оберіть палітру</h4>
           <div class="pallet">
-            <!-- .colour_management -->
             <label class="calc-radio">
               <input
                 type="radio"
@@ -120,20 +119,15 @@
             </label>
           </div>
           <div class="color">
-            <label for="color-search"
-              >Колір
-              <input
-                list="color-list"
-                id="color-search"
-                name="colorSearch"
-                placeholder="Виберіть колір"
-                disabled
-                required
-              />
+            <div class="color__wrap">
+              <label for="color-search">Колір</label>
+              <select class="color__list" id="color-search" name="colorSearch">
+                <option value="" class="test">Виберіть колір</option>
+              </select>
 
-              <datalist id="color-list" class="color__list"> </datalist>
-            </label>
-            <div class="color__preview"></div>
+              <div class="color__preview"></div>
+            </div>
+            <span>*Візуалізація кольору є орієнтовною</span>
           </div>
           <div class="total-price">
             Ціна в кольорі, підсумок:
@@ -169,6 +163,7 @@
     <script src="https://www.w3schools.com/lib/w3color.js"></script>
 
     <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
   </body>
 </html>
 

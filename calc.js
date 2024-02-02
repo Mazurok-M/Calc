@@ -4,7 +4,6 @@ const BASE_URL =
 const ref = {
   structureChangeEl: document.querySelector('.material'),
 
-  searchStructureIn: document.querySelector('#structure-search'),
   structureListEl: document.querySelector('.structure__list'),
 
   searchWeightIn: document.querySelector('#weight-search'),
@@ -52,21 +51,13 @@ async function getListData(range, fun) {
 ref.structureChangeEl.addEventListener('change', changeStructure);
 
 function changeStructure(e) {
-  selectMaterial = e.target.value;
+  resetStructures();
+  resetWeights();
+  resetColor();
 
-  // reset
-  ref.searchStructureIn.value = '';
-  ref.searchWeightIn.value = '';
-  ref.priseStructureEl.innerHTML = '0';
-  ref.totalPriceEl.innerHTML = '0';
-  ref.colorPreviewEl.removeAttribute('data-w3-color');
-  ref.colorPreviewEl.style.backgroundColor = 'inherit';
-  const palletInputs = Array.from(ref.palletSelectionIn);
-  palletInputs.map((e) => {
-    return (e.disabled = true);
-  });
-  ref.searchColorIn.value = '';
   // =================================
+
+  selectMaterial = e.target.value;
 
   getListData(selectMaterial, getStructureList);
 }
@@ -74,42 +65,39 @@ function changeStructure(e) {
 // Отримання списку структур
 function getStructureList(ev) {
   structureList = ev;
-  ref.structureListEl.innerHTML = createStructureItem(ev);
+  createStructureItem(ev);
 }
 
 // Відмальовуємо список структур
+
+const structures = new Choices(ref.structureListEl, {
+  allowHTML: true,
+  noResultsText: 'По вашому запиту нічого не знайдено',
+  resetScrollPosition: false,
+  searchResultLimit: 10,
+});
+
 function createStructureItem(e) {
-  return e
-    .map(({ name }) => {
-      return `
-      <option>${name}</option>
-          `;
-    })
-    .join('');
+  let item = [];
+
+  e.map(({ name }) => {
+    item.push({ value: name, label: name });
+  });
+  structures.setChoices(item);
 }
 
 // ========================================================================
 // Вибір назви структури
-
-ref.searchStructureIn.addEventListener('input', getStructureName);
-
-function getStructureName(ev) {
-  const structureName = ev.target.value.trim();
-  onInputSelectStructure(structureName);
-}
+ref.structureListEl.addEventListener('change', onInputSelectStructure);
 
 // В залежності від вибраної структури отримуємо список доступної фасовки
-function onInputSelectStructure(structureName) {
+function onInputSelectStructure() {
   // reset
-  weights = [];
-  ref.searchWeightIn.value = '';
-  ref.priseStructureEl.innerHTML = '0';
-  ref.totalPriceEl.innerHTML = '0';
-  ref.colorPreviewEl.removeAttribute('data-w3-color');
-  ref.colorPreviewEl.style.backgroundColor = 'inherit';
-  ref.searchColorIn.value = '';
+  resetWeights();
+  resetColor();
 
   // =====================================
+  const structureName = structures.getValue(true);
 
   const filterStructureName = structureList.filter(
     (el) => el.name === structureName
@@ -120,44 +108,56 @@ function onInputSelectStructure(structureName) {
     structureSelect = filterStructureName[0];
 
     for (let key of keys) {
+      console.log(weights);
       if (Number(key)) {
         weights.push(key);
       }
     }
   }
 
-  ref.weightListEl.innerHTML = createWeightsItems(weights);
+  createWeightsItems(weights);
 }
 
 // Відмальовуємо фасовку
 
-function createWeightsItems(elements) {
-  return elements
-    .map((element) => {
-      return `
-      <option>${element}</option>
-          `;
-    })
-    .join('');
+const weightsList = new Choices(ref.weightListEl, {
+  allowHTML: true,
+  noResultsText: 'По вашому запиту нічого не знайдено',
+  resetScrollPosition: false,
+  searchResultLimit: 5,
+  // removeItemButton: true,
+});
+
+function createWeightsItems(weights) {
+  let item = [];
+
+  weights.map((weight) => {
+    item.push({ value: weight, label: weight });
+  });
+
+  weightsList.setChoices(item);
 }
 
 // ====================================================================
-ref.searchWeightIn.addEventListener('input', getSelectWeight);
+
+ref.searchWeightIn.addEventListener('change', getSelectWeight);
 
 // отримуємо вибрану фасовку та виводимо ціну без тонування
 
 function getSelectWeight() {
   // reset
+
+  resetColor();
+  const palletInputs = Array.from(ref.palletSelectionIn);
+  palletInputs.map((e) => {
+    return (e.checked = false);
+  });
   ref.priseStructureEl.innerHTML = '0';
-  ref.searchColorIn.value = '';
-  ref.colorPreviewEl.removeAttribute('data-w3-color');
-  ref.colorPreviewEl.style.backgroundColor = 'inherit';
-  ref.totalPriceEl.innerHTML = '0';
 
   // ========
 
-  selectWeight = ref.searchWeightIn.value;
-  const palletInputs = Array.from(ref.palletSelectionIn);
+  selectWeight = weightsList.getValue(true);
+
   palletInputs.map((e) => {
     return (e.disabled = false);
   });
@@ -168,6 +168,7 @@ function getSelectWeight() {
     ? (ref.priseStructureEl.innerHTML = priseStructure)
     : (ref.priseStructureEl.innerHTML = '0');
 }
+
 // ===============================================================
 
 // ral NCS
@@ -176,45 +177,44 @@ ref.palletChangeEl.addEventListener('change', changePallet);
 
 function changePallet(e) {
   // reset
-  ref.colorPreviewEl.removeAttribute('data-w3-color');
-  ref.colorPreviewEl.style.backgroundColor = 'inherit';
-  ref.totalPriceEl.innerHTML = '0';
-  ref.searchColorIn.value = '';
+  resetColor();
+
   // ----------------------------------------------
 
   const selectPallet = e.target.value;
-
-  ref.searchColorIn.disabled = false;
 
   getListData(selectPallet, getColorList);
 }
 
 function getColorList(ev) {
   colorsList = ev;
-  ref.colorListEl.innerHTML = createColorItems(ev);
+  createColorItems(ev);
 }
 
 // Відмальовуєм список кольорів
+const colors = new Choices(ref.colorListEl, {
+  allowHTML: true,
+  noResultsText: 'По вашому запиту нічого не знайдено',
+  resetScrollPosition: false,
+  searchResultLimit: 10,
+  // removeItemButton: true,
+});
+
 function createColorItems(e) {
-  return e
-    .map(({ number }) => {
-      return `
-      <option>${number}</option>
-          `;
-    })
-    .join('');
+  let item = [];
+
+  e.map(({ number }) => {
+    item.push({ value: number, label: number });
+  });
+  colors.setChoices(item);
 }
 
 // ======================================================
 
-ref.searchColorIn.addEventListener('input', getNameColor);
-// вибирає колір
-function getNameColor(ev) {
-  const nameColor = ev.target.value.trim();
-  onInputSelectColor(nameColor);
-}
+ref.searchColorIn.addEventListener('change', onInputSelectColor);
 
-function onInputSelectColor(nameColor) {
+function onInputSelectColor() {
+  const nameColor = colors.getValue(true);
   const filterColors = colorsList.filter((col) => col.number === nameColor);
 
   if (filterColors.length === 1) {
@@ -228,11 +228,83 @@ function onInputSelectColor(nameColor) {
     calcTotal();
   }
 }
+
 // Розрахунок загальної вартості
 function calcTotal() {
   total =
     Number(selectWeight) * Number(selectColorPrise) + Number(priseStructure);
   ref.totalPriceEl.innerHTML = total;
+}
+
+// Скидання =========================
+
+function resetStructures() {
+  if (structureList) {
+    structures.setChoices(
+      [
+        {
+          value: '',
+          label: 'Виберіть тип',
+          selected: true,
+          disabled: true,
+          placeholder: true,
+        },
+      ],
+      'value',
+      'label',
+      true
+    );
+  }
+}
+
+function resetWeights() {
+  if (weights.length >= 1) {
+    weightsList.setChoices(
+      [
+        {
+          value: '',
+          label: 'Виберіть вагу',
+          selected: true,
+          disabled: true,
+          placeholder: true,
+        },
+      ],
+      'value',
+      'label',
+      true
+    );
+    weights = [];
+  }
+
+  const palletInputs = Array.from(ref.palletSelectionIn);
+  palletInputs.map((e) => {
+    return (e.disabled = true), (e.checked = false);
+  });
+
+  ref.priseStructureEl.innerHTML = '0';
+}
+
+function resetColor() {
+  if (colorsList) {
+    colors.setChoices(
+      [
+        {
+          value: '',
+          label: 'Виберіть колір',
+          selected: true,
+          disabled: true,
+          placeholder: true,
+        },
+      ],
+      'value',
+      'label',
+      true
+    );
+  }
+
+  ref.colorPreviewEl.removeAttribute('data-w3-color');
+  ref.colorPreviewEl.style.backgroundColor = 'inherit';
+  ref.totalPriceEl.innerHTML = '0';
 }
 
 // ========================================
@@ -259,9 +331,11 @@ function sendEmail(formData) {
       'structureSearch'
     )}.<br/> Фасовка - ${formData.get(
       'weightSearch'
-    )}. <br/> Палітра - ${formData.get('pallet')}.<br/> Колір - ${formData.get(
+    )} кг.л. <br/> Палітра - ${formData.get(
+      'pallet'
+    )}.<br/> Колір - ${formData.get(
       'colorSearch'
-    )}.<br/> Загальна вартість - ${total}.<br/>
+    )}.<br/> Загальна вартість - ${total} грн.<br/>
     Телефон: ${formData.get('phone')}.<br/> 
     ПІБ: ${formData.get('name')}.`,
   }).then((message) => {
@@ -307,3 +381,4 @@ ref.phoneEl.onkeydown = function () {
 
   old++;
 };
+// ==================================================

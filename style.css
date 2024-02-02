@@ -2,12 +2,12 @@
   box-sizing: border-box;
 }
 
-input {
+/* input {
   border: 0.5px solid black;
   border-radius: 4px;
   padding: 2px 4px;
   font-size: 14px;
-}
+} */
 
 .calc__container {
   max-width: 800px;
@@ -22,9 +22,6 @@ input {
   font-weight: normal;
 }
 
-/* form {
-  text-align: center;
-} */
 .material {
   display: flex;
   justify-content: space-evenly;
@@ -61,7 +58,8 @@ input {
   display: flex;
   flex-direction: column;
   align-items: center;
-  row-gap: 10px;
+  row-gap: 15px;
+  width: 300px;
 
   font-size: 24px;
   font-weight: 400;
@@ -69,10 +67,8 @@ input {
   margin: 0 auto 30px auto;
 }
 
-.structure input {
-  margin-top: 10px;
+.structure .choices {
   width: 100%;
-  height: 25px;
 }
 
 .calc-form__wrap {
@@ -85,12 +81,16 @@ input {
 
   align-items: center;
   margin-bottom: 30px;
-  column-gap: 10px;
 }
 
-.weight input {
+.weight__title {
+  margin-right: 15px;
+}
+
+.weight .choices {
   width: 120px;
-  height: 25px;
+  margin-bottom: 0;
+  margin-right: 5px;
 }
 
 .pallet {
@@ -117,24 +117,34 @@ input {
 }
 
 .color {
+  margin-bottom: 30px;
+}
+
+.color span {
+  display: block;
+  font-size: 12px;
+  text-align: right;
+}
+
+.color__wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
   column-gap: 5px;
-  margin-bottom: 30px;
+  margin-bottom: 5px;
 }
 
-.color input {
-  height: 25px;
-  width: 150px;
+.color .choices {
+  width: 130px;
+  margin-bottom: 0;
 }
 
 .color__preview {
-  width: 90px;
-  height: 25px;
+  width: 110px;
+  height: 44px;
 
-  border: 0.5px solid black;
-  border-radius: 4px;
+  border: 1px solid #ddd;
+  border-radius: 2.5px;
 }
 
 .total-price {
@@ -154,9 +164,15 @@ input {
 }
 
 .user input {
-  padding: 2px 4px;
-  height: 25px;
+  padding: 10px;
+
   width: 210px;
+
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 2.5px;
+  font-size: 14px;
+  overflow: hidden;
 }
 
 .user-phone__input {
@@ -189,6 +205,18 @@ input {
   height: 20px;
 }
 
-/* #963D87 */
-/* 722e67 */
-/* сірий #ACACAC */
+.choices__list--dropdown .choices__item--selectable,
+.choices__list[aria-expanded] .choices__item--selectable {
+  padding-right: 10px;
+}
+
+.choices__list--dropdown .choices__item--selectable::after,
+.choices__list[aria-expanded] .choices__item--selectable::after {
+  content: '';
+  font-size: 12px;
+  opacity: 0;
+  position: absolute;
+  right: 0px;
+  top: 0;
+  transform: none;
+}
