@@ -53,7 +53,7 @@ ref.structureChangeEl.addEventListener('change', changeStructure);
 function changeStructure(e) {
   resetStructures();
   resetWeights();
-  resetColor();
+  // resetColor();
 
   // =================================
 
@@ -94,7 +94,7 @@ ref.structureListEl.addEventListener('change', onInputSelectStructure);
 function onInputSelectStructure() {
   // reset
   resetWeights();
-  resetColor();
+  // resetColor();
 
   // =====================================
   const structureName = structures.getValue(true);
@@ -146,12 +146,12 @@ ref.searchWeightIn.addEventListener('change', getSelectWeight);
 function getSelectWeight() {
   // reset
 
-  resetColor();
+  // resetColor();
   const palletInputs = Array.from(ref.palletSelectionIn);
-  palletInputs.map((e) => {
-    return (e.checked = false);
-  });
-  ref.priseStructureEl.innerHTML = '0';
+  // palletInputs.map((e) => {
+  //   return (e.checked = false);
+  // });
+  // ref.priseStructureEl.innerHTML = '0';
 
   // ========
 
@@ -166,6 +166,10 @@ function getSelectWeight() {
   structureSelect[selectWeight]
     ? (ref.priseStructureEl.innerHTML = priseStructure)
     : (ref.priseStructureEl.innerHTML = '0');
+
+  if (colors.getValue(true)) {
+    calcTotal();
+  }
 }
 
 // ===============================================================
@@ -243,7 +247,7 @@ function resetStructures() {
       [
         {
           value: '',
-          label: 'Виберіть тип',
+          label: 'Виберіть матеріал',
           selected: true,
           disabled: true,
           placeholder: true,
@@ -262,7 +266,7 @@ function resetWeights() {
       [
         {
           value: '',
-          label: 'Виберіть вагу',
+          label: 'Виберіть фасовку',
           selected: true,
           disabled: true,
           placeholder: true,
@@ -275,12 +279,13 @@ function resetWeights() {
     weights = [];
   }
 
-  const palletInputs = Array.from(ref.palletSelectionIn);
-  palletInputs.map((e) => {
-    return (e.disabled = true), (e.checked = false);
-  });
+  // const palletInputs = Array.from(ref.palletSelectionIn);
+  // palletInputs.map((e) => {
+  //   return (e.disabled = true), (e.checked = false);
+  // });
 
   ref.priseStructureEl.innerHTML = '0';
+  ref.totalPriceEl.innerHTML = '0';
 }
 
 function resetColor() {
@@ -326,7 +331,7 @@ function sendEmail(formData) {
     Subject: 'Замовлення',
     Body: `Група - ${formData.get(
       'material'
-    )}. <br/> Тип структури: - ${formData.get(
+    )}. <br/> Наменування матеріалу: - ${formData.get(
       'structureSearch'
     )}.<br/> Фасовка - ${formData.get(
       'weightSearch'
