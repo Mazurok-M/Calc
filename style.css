@@ -146,8 +146,7 @@
   align-items: center;
 }
 
-.calc-form .color .choices__list--dropdown .choices__item--selectable,
-.choices__list[aria-expanded] .choices__item--selectable {
+.calc-form .color .choices__list--dropdown .choices__item--selectable {
   justify-content: space-between;
 }
 
