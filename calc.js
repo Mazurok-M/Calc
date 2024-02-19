@@ -8,6 +8,7 @@ const ref = {
 
   searchWeightIn: document.querySelector('#weight-search'),
   weightListEl: document.querySelector('.weight__list'),
+  weightUnitEl: document.querySelector('.weight__unit'),
 
   priseStructureEl: document.querySelector('.structure-prise__span'),
 
@@ -33,6 +34,7 @@ let priseStructure;
 let colorsList;
 let total;
 let selectColorPrise;
+let selectPallet;
 // ===============================================
 async function fetchData(range) {
   return await fetch(`${BASE_URL}/${range}`).then((res) => {
@@ -44,7 +46,12 @@ async function fetchData(range) {
 }
 
 async function getListData(range, fun) {
-  await fetchData(range).then(fun);
+  try {
+    const data = await fetchData(range);
+    fun(data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
 }
 
 // Вибирає  тип (pain, enamel, plaster) та отримуємо список структур
@@ -53,13 +60,18 @@ ref.structureChangeEl.addEventListener('change', changeStructure);
 function changeStructure(e) {
   resetStructures();
   resetWeights();
-  // resetColor();
 
   // =================================
 
   selectMaterial = e.target.value;
 
   getListData(selectMaterial, getStructureList);
+
+  if (selectMaterial === 'paint') {
+    ref.weightUnitEl.innerHTML = 'л.';
+  } else {
+    ref.weightUnitEl.innerHTML = 'кг.';
+  }
 }
 
 // Отримання списку структур
@@ -78,11 +90,16 @@ const structures = new Choices(ref.structureListEl, {
 });
 
 function createStructureItem(e) {
-  let item = [];
+  const baseImg = `./img/foto.png`;
+  // const baseImg = `/content/uploads/images/foto.png`;
 
-  e.map(({ name }) => {
-    item.push({ value: name, label: name });
-  });
+  const item = e.map(({ name, url }) => ({
+    value: name,
+
+    label: `<img src=${
+      url || baseImg
+    } alt=${name} width="30"/> <span>${name} </span> `,
+  }));
   structures.setChoices(item);
 }
 
@@ -94,7 +111,6 @@ ref.structureListEl.addEventListener('change', onInputSelectStructure);
 function onInputSelectStructure() {
   // reset
   resetWeights();
-  // resetColor();
 
   // =====================================
   const structureName = structures.getValue(true);
@@ -144,14 +160,7 @@ ref.searchWeightIn.addEventListener('change', getSelectWeight);
 // отримуємо вибрану фасовку та виводимо ціну без тонування
 
 function getSelectWeight() {
-  // reset
-
-  // resetColor();
   const palletInputs = Array.from(ref.palletSelectionIn);
-  // palletInputs.map((e) => {
-  //   return (e.checked = false);
-  // });
-  // ref.priseStructureEl.innerHTML = '0';
 
   // ========
 
@@ -163,9 +172,8 @@ function getSelectWeight() {
 
   priseStructure = structureSelect[selectWeight];
 
-  structureSelect[selectWeight]
-    ? (ref.priseStructureEl.innerHTML = priseStructure)
-    : (ref.priseStructureEl.innerHTML = '0');
+  priseStructure = structureSelect[selectWeight] || '0';
+  ref.priseStructureEl.innerHTML = priseStructure;
 
   if (colors.getValue(true)) {
     calcTotal();
@@ -184,7 +192,7 @@ function changePallet(e) {
 
   // ----------------------------------------------
 
-  const selectPallet = e.target.value;
+  selectPallet = e.target.value;
 
   getListData(selectPallet, getColorList);
 }
@@ -199,17 +207,41 @@ const colors = new Choices(ref.colorListEl, {
   allowHTML: true,
   noResultsText: 'По вашому запиту нічого не знайдено',
   resetScrollPosition: false,
-  searchResultLimit: 10,
+  searchResultLimit: 50,
+  renderChoiceLimit: -1,
+
   // removeItemButton: true,
-});
+}).disable();
 
 function createColorItems(e) {
   let item = [];
+  if (selectPallet === 'ral') {
+    e.map(({ number, hex }) => {
+      item.push({
+        value: number,
+        label: `<span>${number}</span><div class='color__item-bg' style="background-color: ${hex}"></div>`,
+      });
+    });
+  } else {
+    e.map(({ number }) => {
+      item.push({
+        value: number,
+        label: `<span>${number}</span><div class='color__item-bg' data-w3-color="ncs(${number})" ></div>`,
+      });
+    });
+  }
 
-  e.map(({ number }) => {
-    item.push({ value: number, label: number });
-  });
-  colors.setChoices(item);
+  colors.setChoices(item).enable();
+}
+
+document
+  .querySelector('.color__wrap .choices__inner')
+  .addEventListener('click', getBgColor);
+
+function getBgColor() {
+  if (selectPallet === 'ncs') {
+    w3SetColorsByAttribute();
+  }
 }
 
 // ======================================================
@@ -217,17 +249,23 @@ function createColorItems(e) {
 ref.searchColorIn.addEventListener('change', onInputSelectColor);
 
 function onInputSelectColor() {
+  ref.colorPreviewEl.innerHTML = '';
   const nameColor = colors.getValue(true);
   const filterColors = colorsList.filter((col) => col.number === nameColor);
 
   if (filterColors.length === 1) {
     selectColorPrise = filterColors[0][selectMaterial];
 
-    filterColors[0].hex
-      ? (ref.colorPreviewEl.style.backgroundColor = filterColors[0].hex)
-      : ref.colorPreviewEl.setAttribute('data-w3-color', `ncs(${nameColor})`);
-    w3SetColorsByAttribute();
+    if (filterColors[0].img1) {
+      ref.colorPreviewEl.innerHTML = ` <div class="color__tumb">
+      <img class="color__img" src=${filterColors[0].img1} alt="color visualization" />
+    </div>
+    <div class="color__tumb">
+      <img class="color__img" src=${filterColors[0].img2} alt="color visualization" />
+    </div>`;
+    }
 
+    w3SetColorsByAttribute();
     calcTotal();
   }
 }
@@ -279,11 +317,6 @@ function resetWeights() {
     weights = [];
   }
 
-  // const palletInputs = Array.from(ref.palletSelectionIn);
-  // palletInputs.map((e) => {
-  //   return (e.disabled = true), (e.checked = false);
-  // });
-
   ref.priseStructureEl.innerHTML = '0';
   ref.totalPriceEl.innerHTML = '0';
 }
@@ -306,9 +339,10 @@ function resetColor() {
     );
   }
 
-  ref.colorPreviewEl.removeAttribute('data-w3-color');
-  ref.colorPreviewEl.style.backgroundColor = 'inherit';
+  // ref.colorPreviewEl.removeAttribute('data-w3-color');
+  // ref.colorPreviewEl.style.backgroundColor = 'inherit';
   ref.totalPriceEl.innerHTML = '0';
+  ref.colorPreviewEl.innerHTML = '';
 }
 
 // ========================================
@@ -341,7 +375,9 @@ function sendEmail(formData) {
       'colorSearch'
     )}.<br/> Загальна вартість - ${total} грн.<br/>
     Телефон: ${formData.get('phone')}.<br/> 
-    ПІБ: ${formData.get('name')}.`,
+    ПІБ: ${formData.get('name')}.<br/>
+    Коментар:  ${formData.get('comment')}.
+    `,
   }).then((message) => {
     if (message === 'OK') {
       alert(

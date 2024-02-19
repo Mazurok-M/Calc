@@ -59,7 +59,7 @@
   flex-direction: column;
   align-items: center;
   row-gap: 15px;
-  width: 300px;
+  max-width: 300px;
 
   font-size: 24px;
   font-weight: 400;
@@ -88,7 +88,7 @@
 }
 
 .weight .choices {
-  width: 130px;
+  width: 150px;
   margin-bottom: 0;
   margin-right: 5px;
 }
@@ -109,6 +109,7 @@
   font-weight: 600;
 }
 
+.material__title,
 .pallet__title {
   margin: 0 0 20px 0;
   text-align: center;
@@ -135,16 +136,39 @@
 }
 
 .color .choices {
-  width: 130px;
+  width: 250px;
   margin-bottom: 0;
 }
 
-.color__preview {
-  width: 110px;
-  height: 44px;
+.calc-form .color .choices__list--single .choices__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  border: 1px solid #ddd;
-  border-radius: 2.5px;
+.calc-form .color .choices__list--dropdown .choices__item--selectable,
+.choices__list[aria-expanded] .choices__item--selectable {
+  justify-content: space-between;
+}
+
+.color__item-bg {
+  width: 120px;
+  height: 20px;
+}
+
+.color__preview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.color__img {
+  width: 100%;
+}
+
+.color__tumb {
+  width: 145px;
 }
 
 .total-price {
@@ -204,13 +228,13 @@
   height: 20px;
 }
 
-.choices__list--dropdown .choices__item--selectable,
+.calc-form .choices__list--dropdown .choices__item--selectable,
 .choices__list[aria-expanded] .choices__item--selectable {
   padding-right: 10px;
 }
 
-.choices__list--dropdown .choices__item--selectable::after,
-.choices__list[aria-expanded] .choices__item--selectable::after {
+.calc-form .choices__list--dropdown .choices__item--selectable::after,
+.calc-form .choices__list[aria-expanded] .choices__item--selectable::after {
   content: '';
   font-size: 12px;
   opacity: 0;
@@ -218,4 +242,25 @@
   right: 0px;
   top: 0;
   transform: none;
+}
+
+.calc-form .structure .choices__list--single .choices__item {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.calc-form .structure .choices__list--dropdown .choices__item--selectable,
+.choices__list[aria-expanded] .choices__item--selectable {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.user-coment__input {
+  resize: none;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 2.5px;
+  padding: 10px;
 }
