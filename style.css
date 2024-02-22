@@ -2,6 +2,9 @@
   box-sizing: border-box;
 }
 
+img{
+  display: block;
+}
 /* input {
   border: 0.5px solid black;
   border-radius: 4px;
