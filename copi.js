@@ -1,3 +1,8 @@
+// 'https://opensheet.elk.sh/1NEsvoEKcd_KShdoSBLzsTN6jgqXe0Kf9IpzYEy01eKI';
+// const baseImg = `./img/foto.png`;
+
+// ==========================================================================================
+
 // const API_KEY = 'AIzaSyDohOM_n40285L0LR1U14ICvBE0ZPZu3NQ';
 
 // const DISCOVERY_DOC =

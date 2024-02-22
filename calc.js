@@ -1,5 +1,5 @@
 const BASE_URL =
-  'https://opensheet.elk.sh/1NEsvoEKcd_KShdoSBLzsTN6jgqXe0Kf9IpzYEy01eKI';
+  'https://opensheet.elk.sh/1N8DJQlZo0Fi7siUASnb_H4apluo8C5U5hN1_F94Kn2g';
 
 const ref = {
   structureChangeEl: document.querySelector('.material'),
@@ -54,7 +54,7 @@ async function getListData(range, fun) {
   }
 }
 
-// Вибирає  тип (pain, enamel, plaster) та отримуємо список структур
+// Вибирає  тип (pain, quartz, plaster) та отримуємо список структур
 ref.structureChangeEl.addEventListener('change', changeStructure);
 
 function changeStructure(e) {
@@ -90,14 +90,14 @@ const structures = new Choices(ref.structureListEl, {
 });
 
 function createStructureItem(e) {
-  const baseImg = `./img/foto.png`;
   // const baseImg = `/content/uploads/images/foto.png`;
+  const baseImg = `./img/foto.png`;
 
-  const item = e.map(({ name, url }) => ({
+  const item = e.map(({ name, img_url }) => ({
     value: name,
 
     label: `<img src=${
-      url || baseImg
+      img_url || baseImg
     } alt=${name} width="30"/> <span>${name} </span> `,
   }));
   structures.setChoices(item);
@@ -116,18 +116,17 @@ function onInputSelectStructure() {
   const structureName = structures.getValue(true);
 
   const filterStructureName = structureList.filter(
-    (el) => el.name === structureName
+    (el) => el.name.trim() === structureName
   );
 
   if (filterStructureName.length === 1) {
-    const keys = Object.keys(filterStructureName[0]);
     structureSelect = filterStructureName[0];
 
-    for (let key of keys) {
-      if (Number(key)) {
+    Object.keys(structureSelect).forEach((key) => {
+      if (structureSelect[key].trim() !== '' && !isNaN(key)) {
         weights.push(key);
       }
-    }
+    });
   }
 
   createWeightsItems(weights);
@@ -140,7 +139,6 @@ const weightsList = new Choices(ref.weightListEl, {
   noResultsText: 'По вашому запиту нічого не знайдено',
   resetScrollPosition: false,
   searchResultLimit: 5,
-  // removeItemButton: true,
 });
 
 function createWeightsItems(weights) {
@@ -209,8 +207,6 @@ const colors = new Choices(ref.colorListEl, {
   resetScrollPosition: false,
   searchResultLimit: 50,
   renderChoiceLimit: -1,
-
-  // removeItemButton: true,
 }).disable();
 
 function createColorItems(e) {
@@ -339,8 +335,6 @@ function resetColor() {
     );
   }
 
-  // ref.colorPreviewEl.removeAttribute('data-w3-color');
-  // ref.colorPreviewEl.style.backgroundColor = 'inherit';
   ref.totalPriceEl.innerHTML = '0';
   ref.colorPreviewEl.innerHTML = '';
 }
@@ -367,11 +361,9 @@ function sendEmail(formData) {
       'material'
     )}. <br/> Наменування матеріалу: - ${formData.get(
       'structureSearch'
-    )}.<br/> Фасовка - ${formData.get(
-      'weightSearch'
-    )} кг.л. <br/> Палітра - ${formData.get(
-      'pallet'
-    )}.<br/> Колір - ${formData.get(
+    )}.<br/> Фасовка - ${formData.get('weightSearch')} ${
+      ref.weightUnitEl.innerHTML
+    } <br/> Палітра - ${formData.get('pallet')}.<br/> Колір - ${formData.get(
       'colorSearch'
     )}.<br/> Загальна вартість - ${total} грн.<br/>
     Телефон: ${formData.get('phone')}.<br/> 
