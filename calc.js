@@ -69,9 +69,9 @@ function changeStructure(e) {
   getListData(selectMaterial, getStructureList);
 
   if (selectMaterial === "paint") {
-    ref.weightUnitEl.innerHTML = "л.";
+    ref.weightUnitEl.innerHTML = ", л.";
   } else {
-    ref.weightUnitEl.innerHTML = "кг.";
+    ref.weightUnitEl.innerHTML = ", кг.";
   }
 }
 
@@ -249,10 +249,9 @@ function onInputSelectColor() {
   // ref.colorPreviewEl.innerHTML = "";
   const nameColor = colors.getValue(true);
   const filterColors = colorsList.filter((col) => col.number === nameColor);
-  console.log(filterColors);
+
   if (filterColors.length === 1) {
     selectColorPrise = filterColors[0][selectMaterial];
-    console.log(filterColors);
     if (selectPallet === "ncs") {
       Array.from(ref.colorPreviewEl).map((e) =>
         e.setAttribute("data-w3-color", `ncs(${nameColor})`)

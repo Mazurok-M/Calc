@@ -57,17 +57,23 @@ img{
   width: 15px;
 }
 
+.calc-form__data{
+  display: flex;
+  justify-content: space-between;
+  column-gap: 10px;
+}
+
 .structure {
   display: flex;
   flex-direction: column;
   align-items: center;
-  row-gap: 15px;
+  row-gap: 20px;
   max-width: 300px;
 
   font-size: 24px;
   font-weight: 400;
 
-  margin: 0 auto 30px auto;
+  margin: 0 auto 40px auto;
 }
 
 .structure .choices {
@@ -75,37 +81,39 @@ img{
 }
 
 .calc-form__wrap {
-  max-width: 300px;
+  max-width: 650px;
   margin: 0 auto;
 }
 
 .weight {
   display: flex;
+  column-gap: 10px;
 
   align-items: center;
-  margin-bottom: 30px;
+  justify-content: space-between;
+  margin-bottom: 40px;
 }
 
 .weight__title {
-  margin-right: 15px;
+  
+  font-size: 24px;
 }
 
 .weight .choices {
   width: 150px;
   margin-bottom: 0;
-  margin-right: 5px;
+  /* margin-right: 5px; */
 }
 
 .pallet {
   display: flex;
   justify-content: space-evenly;
-  margin-top: 15px;
   margin-bottom: 30px;
 }
 
 .structure-prise {
-  margin-bottom: 20px;
-  font-size: 16px;
+  margin-bottom: 40px;
+  font-size: 18px;
 }
 
 .structure-prise__span {
@@ -121,7 +129,7 @@ img{
 }
 
 .color {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .color span {
@@ -160,9 +168,10 @@ img{
 
 .color__preview {
   display: flex;
-  justify-content: space-between;
+ flex-direction: column;
+  /* justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 10px; */
 }
 
 .color__img {
@@ -170,12 +179,12 @@ img{
 }
 
 .color__tumb {
-  width: 145px;
+  width: 300px;
 }
 
 .total-price {
   margin-bottom: 30px;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .total-price__span {
@@ -186,7 +195,15 @@ img{
   display: flex;
   flex-direction: column;
   row-gap: 20px;
-  margin-bottom: 30px;
+
+  width: 600px;
+  margin: 0px auto 30px auto;
+  
+}
+
+.user__wrap{
+  display: flex;
+  justify-content: space-between;
 }
 
 .user input {
@@ -204,8 +221,9 @@ img{
 .user-phone,
 .user-name {
   display: flex;
-  column-gap: 10px;
-  justify-content: space-between;
+  column-gap: 20px;
+  align-items: center;
+  /* justify-content: space-between; */
 }
 
 .calc-button {

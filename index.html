@@ -29,11 +29,63 @@ https://cdn.jsdelivr.net/npm/choices.js@10.2.0/public/assets/styles/choices.min.
               <input
                 type="radio"
                 name="material"
-                value="paint"
+                value="interior"
                 class="calc-radio__input"
                 required
               />
-              <span>Фарби, емалі та мастики</span>
+              <span>Фарби інтер'єрні</span>
+            </label>
+          </div>
+          <div class="material__item">
+            <img
+              src="./img/paint.jpg"
+              alt="Емалі та мастики"
+              class="material__img"
+            />
+            <label class="calc-radio">
+              <input
+                type="radio"
+                name="material"
+                value="facade"
+                class="calc-radio__input"
+                required
+              />
+              <span>Фарби фасадні</span>
+            </label>
+          </div>
+          <div class="material__item">
+            <img
+              src="./img/quartz.jpg"
+              alt="Фарби та грунтовки"
+              class="material__img"
+            />
+            <label class="calc-radio">
+              <input
+                type="radio"
+                name="material"
+                value="rubberflex"
+                class="calc-radio__input"
+                required
+              />
+
+              <span>Фарба</span>
+            </label>
+          </div>
+          <div class="material__item">
+            <img
+              src="./img/plaster.jpg"
+              alt="Декоративні штукатурки"
+              class="material__img"
+            />
+            <label class="calc-radio">
+              <input
+                type="radio"
+                name="material"
+                value="enamel"
+                class="calc-radio__input"
+                required
+              />
+              <span>Емаль</span>
             </label>
           </div>
           <div class="material__item">
@@ -73,62 +125,80 @@ https://cdn.jsdelivr.net/npm/choices.js@10.2.0/public/assets/styles/choices.min.
           </div>
         </div>
         <div class="calc-form__wrap">
-          <div class="structure">
-            <label for="structure-search">Найменування матеріалу</label>
-            <select
-              class="structure__list"
-              id="structure-search"
-              name="structureSearch"
-            >
-              <option value="">Виберіть матеріал</option>
-            </select>
-          </div>
-          <div class="weight">
-            <label for="weight-search" class="weight__title">Фасовка</label>
-            <select class="weight__list" id="weight-search" name="weightSearch">
-              <option value="">Виберіть фасовку</option>
-            </select>
-            <span class="weight__unit"></span>
-          </div>
-          <div class="structure-prise">
-            Ціна без тонування:
-            <span class="structure-prise__span">0</span> грн.
-          </div>
-          <h4 class="pallet__title">Оберіть палітру</h4>
-          <div class="pallet">
-            <label class="calc-radio">
-              <input
-                type="radio"
-                name="pallet"
-                value="ral"
-                class="pallet__input"
-                disabled
-                required
-              />
-              RAL
-            </label>
-            <label class="calc-radio">
-              <input
-                type="radio"
-                name="pallet"
-                value="ncs"
-                class="pallet__input"
-                disabled
-                required
-              />
-              NCS
-            </label>
-          </div>
-          <div class="color">
-            <div class="color__wrap">
-              <label for="color-search">Колір</label>
-              <select class="color__list" id="color-search" name="colorSearch">
-                <option value="" class="test">Виберіть колір</option>
-              </select>
+          <div class="calc-form__data">
+            <div class="data__wrap">
+              <div class="structure">
+                <label for="structure-search">Найменування матеріалу</label>
+                <select
+                  class="structure__list"
+                  id="structure-search"
+                  name="structureSearch"
+                >
+                  <option value="">Виберіть матеріал</option>
+                </select>
+              </div>
+              <div class="weight">
+                <label for="weight-search" class="weight__title"
+                  >Фасовка<span class="weight__unit"></span
+                ></label>
 
-              <!-- <div class="color__preview"></div> -->
+                <select
+                  class="weight__list"
+                  id="weight-search"
+                  name="weightSearch"
+                >
+                  <option value="">Виберіть фасовку</option>
+                </select>
+              </div>
+              <div class="structure-prise">
+                Ціна без тонування:
+                <span class="structure-prise__span">0</span> грн.
+              </div>
+              <h4 class="pallet__title">Оберіть палітру</h4>
+              <div class="pallet">
+                <label class="calc-radio">
+                  <input
+                    type="radio"
+                    name="pallet"
+                    value="ral"
+                    class="pallet__input"
+                    disabled
+                    required
+                  />
+                  RAL
+                </label>
+                <label class="calc-radio">
+                  <input
+                    type="radio"
+                    name="pallet"
+                    value="ncs"
+                    class="pallet__input"
+                    disabled
+                    required
+                  />
+                  NCS
+                </label>
+              </div>
+              <div class="color">
+                <div class="color__wrap">
+                  <label for="color-search">Колір</label>
+                  <select
+                    class="color__list"
+                    id="color-search"
+                    name="colorSearch"
+                  >
+                    <option value="" class="test">Виберіть колір</option>
+                  </select>
+
+                  <!-- <div class="color__preview"></div> -->
+                </div>
+                <span>*Візуалізація кольору є орієнтовною</span>
+              </div>
+              <div class="total-price">
+                Ціна в кольорі, підсумок:
+                <span class="total-price__span">0</span> грн.
+              </div>
             </div>
-            <span>*Візуалізація кольору є орієнтовною</span>
             <div class="color__preview">
               <div class="color__tumb">
                 <img
@@ -146,32 +216,30 @@ https://cdn.jsdelivr.net/npm/choices.js@10.2.0/public/assets/styles/choices.min.
               </div>
             </div>
           </div>
-
-          <div class="total-price">
-            Ціна в кольорі, підсумок:
-            <span class="total-price__span">0</span> грн.
-          </div>
           <div class="user">
-            <label class="user-phone">
-              Телефон
-              <input
-                class="user-phone__input"
-                type="tel"
-                name="phone"
-                id="phone"
-                required
-                placeholder="+38(000)-000-00-00"
-              />
-            </label>
-            <label class="user-name">
-              ПІБ
-              <input
-                type="text"
-                name="name"
-                required
-                class="user-name__input"
-              />
-            </label>
+            <div class="user__wrap">
+              <label class="user-name">
+                ПІБ
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  class="user-name__input"
+                />
+              </label>
+              <label class="user-phone">
+                Телефон
+                <input
+                  class="user-phone__input"
+                  type="tel"
+                  name="phone"
+                  id="phone"
+                  required
+                  placeholder="+38(000)-000-00-00"
+                />
+              </label>
+            </div>
+
             <label class="user-coment">
               <textarea
                 class="user-coment__input"
