@@ -1,7 +1,8 @@
 const BASE_URL =
-  'https://opensheet.elk.sh/1N8DJQlZo0Fi7siUASnb_H4apluo8C5U5hN1_F94Kn2g';
+  'https://opensheet.elk.sh/1NEsvoEKcd_KShdoSBLzsTN6jgqXe0Kf9IpzYEy01eKI';
 
 const ref = {
+  lang: document.documentElement.lang,
   structureChangeEl: document.querySelector('.material'),
 
   structureListEl: document.querySelector('.structure__list'),
@@ -68,9 +69,9 @@ function changeStructure(e) {
   getListData(selectMaterial, getStructureList);
 
   if (selectMaterial === 'plaster') {
-    ref.weightUnitEl.innerHTML = ', кг.';
+    ref.weightUnitEl.innerHTML = ' кг.';
   } else {
-    ref.weightUnitEl.innerHTML = ', л.';
+    ref.weightUnitEl.innerHTML = ' л.';
   }
 }
 
@@ -90,8 +91,8 @@ const structures = new Choices(ref.structureListEl, {
 });
 
 function createStructureItem(e) {
-  const baseImg = `/content/uploads/images/foto.png`;
-  // const baseImg = `./img/foto.png`;
+  // const baseImg = `/content/uploads/images/foto.png`;
+  const baseImg = `./img/foto.png`;
 
   const item = e.map(({ name, img_url }) => ({
     value: name,
@@ -325,6 +326,7 @@ ref.form.addEventListener('submit', (event) => {
 
   const formData = new FormData(ref.form);
   sendEmail(formData);
+  // sendTelegram(formData);
 
   ref.but.setAttribute('disabled', 'disabled');
 });
@@ -339,20 +341,41 @@ function sendEmail(formData) {
       'material'
     )}. <br/> Наменування матеріалу: - ${formData.get(
       'structureSearch'
-    )}.<br/> Фасовка - ${formData.get('weightSearch')} ${
+    )}.<br/> Фасовка - ${formData.get('weightSearch')}${
       ref.weightUnitEl.innerHTML
     } <br/> Палітра - ${formData.get('pallet')}.<br/> Колір - ${formData.get(
       'colorSearch'
     )}.<br/> Загальна вартість - ${total} грн.<br/>
-    Телефон: ${formData.get('phone')}.<br/> 
+    <br/>
+    Дані замовника:
+    <br/>
+    Телефон: ${formData.get('phone')}.<br/>
     ПІБ: ${formData.get('name')}.<br/>
     Коментар:  ${formData.get('comment')}.
     `,
   }).then((message) => {
     if (message === 'OK') {
-      alert(
-        'Дякуємо за замовлення. Наш менеджер з Вами зв\u0027яжеться найближчим часом'
-      );
+      if (ref.lang === 'ru') {
+        alert(
+          `Спасибо за заказ:
+    ${formData.get('structureSearch')} - ${formData.get('weightSearch')}${
+            ref.weightUnitEl.innerHTML
+          }
+    Цвет - ${formData.get('colorSearch')}
+    Общая стоимость - ${total} грн.\nНаш менеджер с Вами свяжется в ближайшее время
+    `
+        );
+      } else {
+        alert(
+          `Дякуємо за замовлення:
+    ${formData.get('structureSearch')} - ${formData.get('weightSearch')}${
+            ref.weightUnitEl.innerHTML
+          }
+    Колір - ${formData.get('colorSearch')}
+    Загальна вартість - ${total} грн.\nНаш менеджер з Вами зв\u0027яжеться найближчим часом
+    `
+        );
+      }
     } else {
       alert(message);
     }
@@ -392,3 +415,39 @@ ref.phoneEl.onkeydown = function () {
   old++;
 };
 // ==================================================
+
+// Відправка в телеграм
+
+// const TOCEN = '5785294537:AAGH9tyHRYbJzTEJ_NhNzBeNMRtMURST6Kk';
+// const CHAT_ID = '-4168529835';
+// const TELEGRAM_URL = `https://api.telegram.org/bot${TOCEN}/sendMessage`;
+
+// async function sendTelegram(formData) {
+//   try {
+//     await fetch(TELEGRAM_URL, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         chat_id: CHAT_ID,
+//         parse_mode: 'html',
+//         text: `Група - ${formData.get(
+//           'material'
+//         )}.\nНаменування матеріалу: - ${formData.get(
+//           'structureSearch'
+//         )}.\nФасовка - ${formData.get('weightSearch')}${
+//           ref.weightUnitEl.innerHTML
+//         }\nПалітра - ${formData.get('pallet')}.\nКолір - ${formData.get(
+//           'colorSearch'
+//         )}.\nЗагальна вартість - ${total} грн.\n \nДані замовника:\n      Телефон:  ${formData.get(
+//           'phone'
+//         )}.\n      ПІБ:  ${formData.get(
+//           'name'
+//         )}.\n      Коментар:  ${formData.get('comment')}`,
+//       }),
+//     });
+//   } catch (error) {
+//     console.error('Помилка:', error);
+//   }
+// }

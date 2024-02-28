@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ua">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -150,7 +150,7 @@ https://cdn.jsdelivr.net/npm/choices.js@10.2.0/public/assets/styles/choices.min.
               </div>
               <div class="weight">
                 <label for="weight-search" class="weight__title"
-                  >Фасовка<span class="weight__unit"></span
+                  >Фасовка,<span class="weight__unit"></span
                 ></label>
 
                 <select
@@ -247,6 +247,7 @@ https://cdn.jsdelivr.net/npm/choices.js@10.2.0/public/assets/styles/choices.min.
                   id="phone"
                   required
                   placeholder="+38(000)-000-00-00"
+                  minlength="18"
                 />
               </label>
             </div>
@@ -263,9 +264,69 @@ https://cdn.jsdelivr.net/npm/choices.js@10.2.0/public/assets/styles/choices.min.
           <button type="submit" class="calc-button">Запустити в роботу</button>
         </div>
       </form>
+      <div class="description">
+        <p class="description__text">
+          Сервіс надає можливість швидко обрати необхідну фарбу, емаль або
+          штукатурку та затонувати її у необхідний відтінок. Для прорахунку
+          доступні дві найпопулярніші палітри кольорів - RAL (188 кольорів на
+          вибір) та NCS (1967 кольорів на вибір).
+        </p>
+        <p class="description__text">
+          Для замовлення лакофарбових матеріалів у кольорі слід зробити декілька
+          простих кроків:
+        </p>
+        <ol class="description__list">
+          <li class="description__item">
+            Обрати одну з трьох категорій матеріалів, які ми тонуємо.
+          </li>
+          <li class="description__item">
+            Обрати конкретний матеріал з усіх представлених.
+          </li>
+          <li class="description__item">
+            Обрати фасовку матеріалу. Ми можемо затонувати для Вас абсолютно
+            будь-який об'єм. Від найменшої баночки емалі 0.4 л до необмеженої
+            кількості.
+          </li>
+        </ol>
+        <p class="description__text">
+          Коли ви обрали всі вищезазначені пункти, відобразиться базова
+          роздрібна ціна матеріалу без тонування.
+        </p>
+        <p class="description__text">
+          Далі слід обрати палітру кольорів та відповідний колір з випадаючого
+          переліку. При виборі того чи іншого варіанту кольору відображається
+          його зразок.
+        </p>
+        <p class="description__text">
+          Після усіх заповнених даних Ви побачите підсумкову вартість
+          затонованого матеріалу у певній фасовці у відповідний колір, "під
+          ключ", що дозволяє Вам отримати готовий до застосування продукт.
+        </p>
+        <p class="description__text">
+          Після чого залиште ваш номер телефону, ім'я та коментар (за
+          необхідності) та натискайте "Запустити в роботу". Наші менеджери
+          максимально оперативно відреагують на ваш запит, зв'яжуться для
+          підтвердження та передадуть замовлення в роботу.
+        </p>
+        <p class="description__text">
+          Наше виробниче підприємство використовує комп'ютерне колерування.
+          Маємо у арсеналі усе необхідне для цього професійне імпортне
+          обладнання. Тонуємо абсолютно усі наші фарби, емалі тощо в будь-який
+          колір, за лічені хвилини зі 100% точністю відповідності кольорів.
+        </p>
+        <p class="description__text">
+          *Калькулятор прораховує роздрібну вартість затонованого матеріалу. В
+          залежності від необхідної кількості лакофарбових виробів для
+          тонування, діє спеціальна система знижок від малого до великого опту
+          та багато акційних пропозицій у вигляді безкоштовної доставки тощо.
+          Детально про вашу спецпропозицію Вам повідомить менеджер при обробці
+          запиту
+        </p>
+      </div>
     </div>
+
     <script src="calc.js" type="module"></script>
-    <script src="https://www.w3schools.com/lib/w3color.js"></script>
+    <!-- <script src="https://www.w3schools.com/lib/w3color.js"></script> -->
 
     <script src="https://smtpjs.com/v3/smtp.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>

@@ -19,6 +19,10 @@ img {
   padding: 40px 10px;
 }
 
+.calc-form {
+  margin-bottom: 80px;
+}
+
 .calc__title {
   text-align: center;
   font-size: 32px;
@@ -315,4 +319,16 @@ img {
   border: 1px solid #ddd;
   border-radius: 2.5px;
   padding: 10px;
+}
+
+.description {
+  text-align: justify;
+}
+
+.description__text {
+  text-indent: 20px;
+}
+
+.description__list {
+  padding-inline-start: 50px;
 }
