@@ -382,10 +382,6 @@ function sendEmail(formData) {
   });
 }
 
-// 3f124145-fdbf-4716-85c1-40ef55000509
-// Username: 'm.p.mazurok@gmail.com',
-// Password: '8A6207DF076B383C44B4ACD5663CB241336F',
-
 // ===============================================
 
 ref.phoneEl.onclick = function () {
@@ -418,8 +414,8 @@ ref.phoneEl.onkeydown = function () {
 
 // Відправка в телеграм
 
-// const TOCEN = '5785294537:AAGH9tyHRYbJzTEJ_NhNzBeNMRtMURST6Kk';
-// const CHAT_ID = '-4168529835';
+// const TOCEN = 'tocen';
+// const CHAT_ID = 'id';
 // const TELEGRAM_URL = `https://api.telegram.org/bot${TOCEN}/sendMessage`;
 
 // async function sendTelegram(formData) {
